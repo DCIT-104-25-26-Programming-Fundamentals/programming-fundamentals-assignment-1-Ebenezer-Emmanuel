@@ -90,3 +90,138 @@
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
 
+def show_menu():
+    """Displays the main options for the student record system."""
+    print("\n================================")
+    print("   STUDENT RECORD SYSTEM MENU   ")
+    print("================================")
+    print("1. Add student")
+    print("2. Display all students")
+    print("3. Calculate average score")
+    print("4. Quit")
+
+
+def add_student(students):
+    """Collects student info, ID, and scores, then appends the record."""
+    name = input("Student name: ").strip()
+    if not name:
+        print("Name cannot be blank.")
+        return
+
+    # ID validation
+    try:
+        student_id = int(input("Student ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter numbers only.")
+        return
+
+    # Check for duplicate IDs
+    for s in students:
+        if s["id"] == student_id:
+            print(f"Error: A student with ID {student_id} already exists.")
+            return
+
+    # Collect assessment scores
+    try:
+        count = int(input("How many scores? "))
+        if count <= 0:
+            print("Score count must be a positive integer.")
+            return
+    except ValueError:
+        print("Invalid entry. Number of scores must be an integer.")
+        return
+
+    scores = []
+    for i in range(1, count + 1):
+        while True:
+            try:
+                score = float(input(f"Enter score {i}: "))
+                if 0 <= score <= 100:
+                    scores.append(score)
+                    break
+                else:
+                    print("Score must be between 0 and 100.")
+            except ValueError:
+                print("Please enter a valid numeric score.")
+
+    # Save student object
+    student_record = {
+        "name": name,
+        "id": student_id,
+        "scores": scores
+    }
+    students.append(student_record)
+    print(f'Student "{name}" added successfully.')
+
+
+def display_all_students(students):
+    """Prints a formatted table with all stored student records."""
+    if not students:
+        print("No student records found.")
+        return
+
+    print("-" * 65)
+    print(f"{'Name':<20} {'ID':<12} {'Scores':<18} {'Average':<10}")
+    print("-" * 65)
+
+    for student in students:
+        scores = student["scores"]
+        avg = sum(scores) / len(scores) if scores else 0.0
+        
+        # Format scores array into a clean comma-separated string
+        scores_str = ", ".join(f"{s:g}" for s in scores)
+        
+        print(f"{student['name']:<20} {student['id']:<12} {scores_str:<18} {avg:.2f}")
+
+    print("-" * 65)
+
+
+def calculate_student_average(students):
+    """Looks up a student by ID and prints their calculated score average."""
+    if not students:
+        print("No student records found.")
+        return
+
+    try:
+        search_id = int(input("Enter student ID: "))
+    except ValueError:
+        print("Invalid ID format. Please enter numbers only.")
+        return
+
+    for student in students:
+        if student["id"] == search_id:
+            scores = student["scores"]
+            if not scores:
+                print(f"{student['name']} has no recorded scores.")
+                return
+            
+            avg = sum(scores) / len(scores)
+            print(f"{student['name']}'s average score: {avg:.2f}")
+            return
+
+    print(f"Error: Student ID {search_id} not found.")
+
+
+def main():
+    """Main application loop."""
+    students = []
+
+    while True:
+        show_menu()
+        choice = input("Enter your choice (1-4): ").strip()
+
+        if choice == "1":
+            add_student(students)
+        elif choice == "2":
+            display_all_students(students)
+        elif choice == "3":
+            calculate_student_average(students)
+        elif choice == "4":
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid selection! Please enter a number from 1 to 4.")
+
+
+if __name__ == "__main__":
+    main()

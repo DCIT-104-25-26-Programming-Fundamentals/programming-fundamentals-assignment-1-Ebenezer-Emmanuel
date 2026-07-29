@@ -68,3 +68,109 @@
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
 
+def add(a, b):
+    """Adds two numbers."""
+    return a + b
+
+
+def subtract(a, b):
+    """Subtracts second number from first number."""
+    return a - b
+
+
+def multiply(a, b):
+    """Multiplies two numbers."""
+    return a * b
+
+
+def divide(a, b):
+    """Divides first number by second number with zero check."""
+    if b == 0:
+        return "Error: Cannot divide by zero."
+    return round(a / b, 2)
+
+
+def modulus(a, b):
+    """Calculates remainder of division with zero check."""
+    if b == 0:
+        return "Error: Cannot perform modulus by zero."
+    return a % b
+
+
+def power(a, b):
+    """Calculates base raised to the exponent power."""
+    return a ** b
+
+
+def show_menu():
+    """Displays the menu options."""
+    print("\n============================")
+    print("       SIMPLE CALCULATOR    ")
+    print("============================")
+    print("1. Addition")
+    print("2. Subtraction")
+    print("3. Multiplication")
+    print("4. Division")
+    print("5. Modulus")
+    print("6. Exponentiation")
+    print("7. Quit")
+
+
+def get_number_input(prompt):
+    """Helper to collect a valid numeric input without crashing."""
+    while True:
+        try:
+            val = float(input(prompt))
+            # Format to int if it's a whole number for cleaner display
+            return int(val) if val.is_integer() else val
+        except ValueError:
+            print("Invalid input! Please enter a valid number.")
+
+
+def main():
+    """Main program execution loop."""
+    while True:
+        show_menu()
+        choice = input("Select an operation (1-7): ").strip()
+
+        if choice == "7":
+            print("Goodbye!")
+            break
+
+        if choice not in ["1", "2", "3", "4", "5", "6"]:
+            print("Invalid choice! Please select a number between 1 and 7.")
+            continue
+
+        # Get operands from user
+        num1 = get_number_input("Enter first number : ")
+        num2 = get_number_input("Enter second number: ")
+
+        # Perform selected operation
+        if choice == "1":
+            res = add(num1, num2)
+            print(f"Result: {num1} + {num2} = {res}")
+        elif choice == "2":
+            res = subtract(num1, num2)
+            print(f"Result: {num1} - {num2} = {res}")
+        elif choice == "3":
+            res = multiply(num1, num2)
+            print(f"Result: {num1} * {num2} = {res}")
+        elif choice == "4":
+            res = divide(num1, num2)
+            if isinstance(res, str):
+                print(res)
+            else:
+                print(f"Result: {num1} / {num2} = {res}")
+        elif choice == "5":
+            res = modulus(num1, num2)
+            if isinstance(res, str):
+                print(res)
+            else:
+                print(f"Result: {num1} % {num2} = {res}")
+        elif choice == "6":
+            res = power(num1, num2)
+            print(f"Result: {num1} ** {num2} = {res}")
+
+
+if __name__ == "__main__":
+    main()
